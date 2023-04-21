@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Booking {
+  id         String    @id @default(uuid())
+  date       DateTime
+  isEstimate Boolean   @default(true)
+  customer   Customer? @relation(fields: [customerId], references: [id])
+  customerId String?   @unique
+}
+
+model Customer {
+  id        String   @id @default(uuid())
+  fname     String
+  lname     String
+  email     String
+  phone     Int
+  address   Address  @relation(fields: [addressId], references: [id])
+  addressId String   @unique
+  booking   Booking?
+}
+
+model Address {
+  id       String    @id @default(uuid())
+  address  String
+  city     String
+  state    String
+  zipCode  Int
+  Customer Customer?
+}

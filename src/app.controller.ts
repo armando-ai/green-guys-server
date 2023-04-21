@@ -1,12 +1,16 @@
 import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { ResponseStatus } from './modules/interfaces/ResponseStatus';
+
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
-
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Get('status')
+  getStatus(): ResponseStatus<null> {
+    return {
+      code: 200,
+      message: "OK"
+    };
   }
+
+
 }
