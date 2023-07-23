@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { createTransport, Transporter } from 'nodemailer';
+import dotenv from 'dotenv';
 
+dotenv.config();
 @Injectable()
 export class MailerService {
     private transporter: Transporter;
@@ -29,10 +31,10 @@ export class MailerService {
             this.transporter.sendMail(mailOptions, (error, info) => {
                 if (error) {
                     reject(error);
-                 
+
                 } else {
                     resolve(`Email sent: ${info.response}`);
-                  
+
                 }
             });
         });
