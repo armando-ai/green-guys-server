@@ -5,5 +5,6 @@ export class CreateBookingDto {
     date: Date
     isEstimate: boolean;
     customerId: string;
+    serviceType: string[];
 }
 

@@ -7,12 +7,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+//add serviceType to email
 model Booking {
-  id         String    @id @default(uuid())
-  date       DateTime
-  isEstimate Boolean   @default(true)
-  customer   Customer? @relation(fields: [customerId], references: [id])
-  customerId String?   @unique
+  id          String    @id @default(uuid())
+  date        DateTime
+  isEstimate  Boolean   @default(true)
+  customer    Customer? @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  customerId  String?   @unique
+  serviceType String[]
 }
 
 model Customer {
@@ -20,10 +22,17 @@ model Customer {
   fname     String
   lname     String
   email     String
-  phone     Int
-  address   Address  @relation(fields: [addressId], references: [id])
+  phone     String
+  address   Address  @relation(fields: [addressId], references: [id], onDelete: Cascade)
   addressId String   @unique
   booking   Booking?
+}
+
+//fetch all excluded days that from is gte  from
+model ExcludedDays {
+  id   String    @id @default(uuid())
+  from DateTime
+  to   DateTime?
 }
 
 model Address {

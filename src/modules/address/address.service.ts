@@ -1,26 +1,31 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { UpdateAddressDto } from './dto/update-address.dto';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class AddressService {
-  create(createAddressDto: CreateAddressDto) {
-    return 'This action adds a new address';
+  constructor(@Inject(PrismaService) private readonly prisma: PrismaService) { }
+  async create(createAddressDto: CreateAddressDto) {
+
+    const address = await this.prisma.address.create({
+      data: createAddressDto
+      , select: {
+        id: true
+      }
+    })
+    return address;
   }
 
-  findAll() {
-    return `This action returns all address`;
+  async findAnalytic() {
+    const cityCounts = await this.prisma.address.groupBy({
+      by: ['city'],
+      _count: {
+        city: true
+      },
+    });
+    return cityCounts;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} address`;
-  }
 
-  update(id: number, updateAddressDto: UpdateAddressDto) {
-    return `This action updates a #${id} address`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} address`;
-  }
 }

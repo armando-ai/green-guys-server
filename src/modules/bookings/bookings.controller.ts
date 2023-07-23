@@ -2,32 +2,39 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { BookingsService } from './bookings.service';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { UpdateBookingDto } from './dto/update-booking.dto';
+import { MailerService } from '../mailer/mailer.service';
 
 @Controller('bookings')
 export class BookingsController {
-  constructor(private readonly bookingsService: BookingsService) {}
+  constructor(private readonly bookingsService: BookingsService, private readonly mailerService: MailerService) { }
 
   @Post()
   create(@Body() createBookingDto: CreateBookingDto) {
+
     return this.bookingsService.create(createBookingDto);
   }
 
-  @Get()
-  findAll() {
-    return this.bookingsService.findAll();
+
+  @Get('/getAvailable/:date')
+  findAvailable(@Param('date') date: string) {
+
+    return this.bookingsService.findAvailable(date);
+  }
+  @Get('/getAppt/:id')
+  findAppt(@Param('id') id: string) {
+
+    return this.bookingsService.getAppt(id);
+  }
+  @Get('/getUnAvailable')
+  findUnAvailable() {
+    console.log("ping");
+    return this.bookingsService.getUnAvailable();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.bookingsService.findOne(+id);
-  }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBookingDto: UpdateBookingDto) {
-    return this.bookingsService.update(+id, updateBookingDto);
-  }
 
-  @Delete(':id')
+
+  @Delete('/:id')
   remove(@Param('id') id: string) {
     return this.bookingsService.remove(id);
   }
