@@ -51,7 +51,7 @@ export class BookingsService {
       ...(booking.date.getHours() >= 12 && { hour: 'numeric' }),
     });
     const dateShift = new Date(booking.date);
-    dateShift.setHours(dateShift.getHours() + 6);
+
 
     const formattedDate = formatter.format(dateShift);
     const serviceTypes = getServiceTypesHtml(booking.serviceType);
@@ -155,7 +155,6 @@ export class BookingsService {
       ...(deleteInfo.bookingDate.getHours() >= 12 && { hour: 'numeric' }),
     });
     const dateShift = new Date(deleteInfo.bookingDate);
-    dateShift.setHours(dateShift.getHours() + 6);
 
     const formattedDate = formatter.format(dateShift);
     await this.mailerService.sendMail(
