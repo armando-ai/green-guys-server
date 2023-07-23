@@ -86,7 +86,7 @@ export class BookingsService {
     );
 
     await this.mailerService.sendMail(
-      `${process.env.BOSS_EMAIL}`,
+      `${process.env.EMAIL}`,
       `New Estimate Request Received ${formattedDate}`,
       `<!DOCTYPE html>
       <html>
